@@ -57,6 +57,16 @@ public class App {
                 return "Loaded " + name;
             }
 
+            if (command.startsWith("challenge"))
+            {
+                String playersString = command.substring(10);
+                String[] players = playersString.split(" ");
+                String challenger = players[0];
+                String challengedPlayer = players[1];
+                Challenge challenge = league.createChallenge(challenger, challengedPlayer);
+                return league.initChallenge(challenge);
+            }
+
             return "Unknown command: " + command;
         }
         catch (IllegalArgumentException e)

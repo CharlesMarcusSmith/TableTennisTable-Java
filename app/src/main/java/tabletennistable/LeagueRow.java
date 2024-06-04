@@ -54,6 +54,11 @@ public class LeagueRow {
         return players.contains(player);
     }
 
+    public void deletePlayer(String player)
+    {
+        players.remove(player);
+    }
+
     // private int computeMaxSizeWithSizeCap(int maxSize){
     //     var sizeCapString = System.getenv("TABLE_TENNIS_LEAGUE_ROW_SIZE_CAP");
     //     if (sizeCapString == null) return maxSize;

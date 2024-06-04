@@ -1,14 +1,19 @@
 package tabletennistable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class League {
     private List<LeagueRow> _rows;
+    Scanner in = new Scanner(System.in);
+    private List<String> _strikes;
 
     public League()
     {
         this._rows = new ArrayList<>();
+        this._strikes = new ArrayList<>();
     }
 
     public League(List<LeagueRow> rows)
@@ -116,5 +121,87 @@ public class League {
             rowIndex++;
         }
         return -1;
+    }
+
+    public Challenge createChallenge(String challenger, String challengedPlayer)
+    {
+        isPlayerInGame(challenger);
+        isPlayerInGame(challengedPlayer);
+        isChallengePlayerUnique(challenger,challengedPlayer);
+
+        Challenge challenge = new Challenge(challenger, challengedPlayer);
+        return challenge;
+    }
+
+    private void isChallengePlayerUnique(String challenger, String challengedPlayer)
+    {
+        if(challenger.equals(challengedPlayer)){
+            throw new IllegalArgumentException("A player can not challenge themself.");
+        }
+    }
+
+    public String initChallenge(Challenge challenge)
+    {
+        String answer = "";
+        while (!answer.equals("yes") && !answer.equals("no")) {
+            System.out.println(challenge.challenger + " has challenged " + challenge.getChallengedPlayer());
+            System.out.println("Does " + challenge.getChallengedPlayer() + " accept? ('yes' or 'no')");
+            answer = in.nextLine();
+        }
+        if (answer.equals("yes")) {
+            return challengeResult(challenge);
+        }
+        else {
+            _strikes.add(challenge.challengedPlayer);
+            return countStrikes(challenge);
+        }
+    }
+
+    private String challengeResult(Challenge challenge)
+    {
+        String answer = "";
+        while (!answer.equals(challenge.challenger) && !answer.equals(challenge.challengedPlayer)) {
+            System.out.println("Who won? " + challenge.challenger + " or " + challenge.getChallengedPlayer());
+            answer = in.nextLine();
+        }
+        recordWin(answer, challenge.getOtherPlayer(answer));
+        return "Recorded " + answer + " win against " + challenge.getOtherPlayer(answer);
+    }
+
+    private String countStrikes(Challenge challenge)
+    {
+        int strikes = Collections.frequency(_strikes, challenge.challengedPlayer);
+        if(strikes < 3){
+            return "Strike added, " + challenge.challengedPlayer + " now has " + strikes + " strikes.";
+        }
+        else {
+            strikeOut(challenge);
+            return "Strike out! " + challenge.challengedPlayer + " has been removed from the league.";
+        }
+    }
+
+    private void strikeOut(Challenge challenge)
+    {
+        if(
+                findPlayerRowIndex(challenge.challenger) >
+                        findPlayerRowIndex(challenge.challengedPlayer)
+        ){
+            recordWin(challenge.challenger, challenge.challengedPlayer);
+        }
+
+        while(findPlayerRowIndex(challenge.challengedPlayer) < _rows.size()-1){
+            recordWin(
+                    _rows.get(findPlayerRowIndex(challenge.challengedPlayer) + 1)
+                            .getPlayers()
+                            .get(0)
+                    ,challenge.challengedPlayer
+            );
+        }
+
+        int playerRow = findPlayerRowIndex(challenge.challengedPlayer);
+        _rows.get(playerRow).deletePlayer(challenge.challengedPlayer);
+
+        //TODO: Remove from strikes method
+        //TODO: Split into methods
     }
 }
