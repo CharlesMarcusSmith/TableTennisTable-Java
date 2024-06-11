@@ -189,19 +189,26 @@ public class League {
             recordWin(challenge.challenger, challenge.challengedPlayer);
         }
 
-        while(findPlayerRowIndex(challenge.challengedPlayer) < _rows.size()-1){
+        RemovePlayerFromLeague(challenge.challengedPlayer);
+        RemoveStrikesForPlayer(challenge.challengedPlayer);
+    }
+
+    public void RemovePlayerFromLeague(String player) {
+        while(findPlayerRowIndex(player) < _rows.size()-1){
             recordWin(
-                    _rows.get(findPlayerRowIndex(challenge.challengedPlayer) + 1)
+                    _rows.get(findPlayerRowIndex(player) + 1)
                             .getPlayers()
                             .get(0)
-                    ,challenge.challengedPlayer
+                    ,player
             );
         }
+        int playerRow = findPlayerRowIndex(player);
+        _rows.get(playerRow).deletePlayer(player);
+    }
 
-        int playerRow = findPlayerRowIndex(challenge.challengedPlayer);
-        _rows.get(playerRow).deletePlayer(challenge.challengedPlayer);
-
-        //TODO: Remove from strikes method
-        //TODO: Split into methods
+    public void RemoveStrikesForPlayer(String player) {
+        _strikes.removeIf(
+                strike -> strike.equals(player)
+        );
     }
 }

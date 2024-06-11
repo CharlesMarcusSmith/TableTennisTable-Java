@@ -33,7 +33,7 @@ public class AppTest {
         League league = new League();
         Mockito.when(renderer.render(league)).thenReturn("Rendered League");
 
-        App app = new App(league, renderer, null, null);
+        App app = new App(league, renderer, null);
 
         Assert.assertEquals("Rendered League", app.sendCommand("print"));
     }
@@ -43,7 +43,7 @@ public class AppTest {
     {
         initMocks();
         League league = new League();
-        App app = new App(league, renderer, null, null);
+        App app = new App(league, renderer, null);
         addTestPlayers(app);
 
         Assert.assertEquals(3, league.getRows().stream().count());
@@ -54,7 +54,7 @@ public class AppTest {
     {
         initMocks();
         League league = new League();
-        App app = new App(league, renderer, null, null);
+        App app = new App(league, renderer, null);
 
         //Adding a player
         app.sendCommand("add player Tom");
@@ -67,7 +67,7 @@ public class AppTest {
     {
         initMocks();
         League league = new League();
-        App app = new App(league, renderer, null, null);
+        App app = new App(league, renderer, null);
         addTestPlayers(app);
 
         // Jack is original winner:
