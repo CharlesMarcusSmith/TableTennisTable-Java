@@ -125,8 +125,11 @@ public class League {
 
     public Challenge createChallenge(String challenger, String challengedPlayer)
     {
-        isPlayerInGame(challenger);
-        isPlayerInGame(challengedPlayer);
+        if(!isPlayerInGame(challenger) ||
+        !isPlayerInGame(challengedPlayer)){
+            throw new IllegalArgumentException("player not recognised.");
+        }
+
         isChallengePlayerUnique(challenger,challengedPlayer);
 
         Challenge challenge = new Challenge(challenger, challengedPlayer);
@@ -152,12 +155,16 @@ public class League {
             return challengeResult(challenge);
         }
         else {
-            _strikes.add(challenge.challengedPlayer);
+            addStrikes(challenge.challengedPlayer);
             return countStrikes(challenge);
         }
     }
 
-    private String challengeResult(Challenge challenge)
+    public void addStrikes(String player){
+        _strikes.add(player);
+    }
+
+    public String challengeResult(Challenge challenge)
     {
         String answer = "";
         while (!answer.equals(challenge.challenger) && !answer.equals(challenge.challengedPlayer)) {
@@ -168,7 +175,7 @@ public class League {
         return "Recorded " + answer + " win against " + challenge.getOtherPlayer(answer);
     }
 
-    private String countStrikes(Challenge challenge)
+    public String countStrikes(Challenge challenge)
     {
         int strikes = Collections.frequency(_strikes, challenge.challengedPlayer);
         if(strikes < 3){
@@ -180,7 +187,7 @@ public class League {
         }
     }
 
-    private void strikeOut(Challenge challenge)
+    public void strikeOut(Challenge challenge)
     {
         if(
                 findPlayerRowIndex(challenge.challenger) >
