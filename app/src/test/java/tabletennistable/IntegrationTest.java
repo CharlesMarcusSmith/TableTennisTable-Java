@@ -60,9 +60,6 @@ public class IntegrationTest
         app.sendCommand("add player Bob");
         app.sendCommand("add player Ben");
 
-
-        String output = app.sendCommand("print");
-
         Assert.assertEquals(
                 "                              -------------------\r\n" +
                         "                              |       Neo       |\r\n" +

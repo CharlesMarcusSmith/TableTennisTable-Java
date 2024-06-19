@@ -3,14 +3,7 @@ package tabletennistable;
 import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class LeagueTest {
 
