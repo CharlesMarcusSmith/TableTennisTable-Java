@@ -8,4 +8,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Testing Build
         run: docker build --target test --tag table-tennis-table:testing .
-           - docker run table-tennis-table:testing
+      - name: Running Test Build
+        run: docker run table-tennis-table:testing
+      - name: Build Prod
+        run: docker build --target prod --tag table-tennis-table:production .
