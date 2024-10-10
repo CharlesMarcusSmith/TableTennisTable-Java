@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Testing Build
+      - name: Build Test
         run: docker build --target test --tag table-tennis-table:testing .
       - name: Running Test Build
         run: docker run table-tennis-table:testing
