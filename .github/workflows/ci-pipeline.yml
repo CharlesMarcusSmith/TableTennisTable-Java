@@ -7,4 +7,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker build --target test --tag table-tennis-table:testing .
-      - run: docker run -it table-tennis-table:testing
+      - run: docker run table-tennis-table:testing
